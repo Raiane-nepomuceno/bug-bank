@@ -1,0 +1,8 @@
+node_modules
+*.rar
+reports/html/*
+reports/json/*
+reports/screenshots/*
+cypress/downloads/*
+cypress/videos
+.vscode
