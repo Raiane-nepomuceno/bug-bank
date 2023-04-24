@@ -25,10 +25,5 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import './commands'
 import '@faker-js/faker'
-import '@badeball/cypress-cucumber-preprocessor'
-import '@bahmutov/cypress-esbuild-preprocessor'
-import '@esbuild-plugins/node-modules-polyfill'
-
 import './gui_commands'
-import './commandsLogin'
 import  'cypress-mochawesome-reporter/register' ;

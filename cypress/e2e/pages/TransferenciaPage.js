@@ -1,4 +1,4 @@
-import { size } from "cypress/types/lodash";
+const { faker } = require('@faker-js/faker');
 
 class TranferenciaPage{
     constructor(){
@@ -15,23 +15,40 @@ class TranferenciaPage{
 
     };
    transferenciaValida(){
-    this.resultJSONAccount(); // listagens dos dois ultimos
-     
+    var json = {};
+    json =  JSON.parse(this.resultJSONAccount()); // listagens do ultimo ultimos
+    console.log("transfer"+json);
+    //this.inputDataAccount(json);
+    //console.log(json) 
+   }
+   inputDataAccount(account){
+    const numeroConta = account.numeroConta;
+    const digito = account.digito;
+
+    const valueTranfer = faker.finance.amount;
+    const description = faker.finance.accountName;
+
+    console.log(numeroConta);
+    console.log(digito);
+    //this.elements.numberAccountlInput().type(account.numeroConta,{force:true});
+    /*this.elements.digitAccountInput().type(account.digito, {force:true});
+    this.elements.valueTransferInput().type(valueTranfer, {force:true})
+    this.elements.description().type(description, {force:true});
+    this.elements.transferBtn().click({force:true});*/
    }
    resultJSONAccount(){
-    var lastAccountsArray = [];
-    var sizeArray = 0;
-    cy
-     .fixture('contasCadastradas')
-     .then(user =>{
-        user.forEach( u => this.listaContas.push(u));
-     })
-    
-     sizeArray = this.listaContas.length;
+    let index = 0;
+    let json = {};
+        cy
+          .fixture('contasCadastradas')
+          .then(account =>{
 
-     console.log("nova versão");
-     console.log("lista contas"+this.listaContas);
-     console.log(this.listaContas.indexOf([sizeArray - 1]));
+            index = account.length;     
+            json.numeroConta = account[index - 1].numeroConta;
+            json.digito =  account[index - 1].digito;  
+        })
+        //console.log(array)
+        return JSON.stringify(json);
      
    }
  }

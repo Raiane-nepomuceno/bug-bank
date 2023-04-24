@@ -19,6 +19,7 @@ class CadastroPage{
     enterURL(){
         cy.visit('/');
      }
+
      saveUser(email, nome, password, saldo){
         var json = {};
             cy

@@ -16,12 +16,14 @@ Given(/^que o usuário faça o cadastro$/, () => {
 
 Then(/^o usuário será logado ao sistema$/, () => {
 	
+	//Primeiro cadastro
 	loginPage.returnRegister();
 	loginPage.loginUsuarioValido(user.email, user.senha);
 	homePage.getAccountNumber();
 
 	homePage.logoutUser();
 
+	//Segundo cadastro
 	loginPage.returnRegister();
 
 	loginPage.loginUsuarioValido(user2.email, user2.senha);
@@ -31,7 +33,7 @@ Then(/^o usuário será logado ao sistema$/, () => {
 
 Then(/^o usuário com saldo preencher os campos válidos <num_conta,digito,descr>$/, () => {
 	homePage.clickBtnTransferencia();
-	//transferenciaPage.transferenciaValida();  
+	transferenciaPage.transferenciaValida();  
 });
 
 When(/^o usuário informar o valor_transf <0,01; 100 mil reais; um milhão de reais$/, () => {

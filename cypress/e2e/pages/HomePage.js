@@ -30,18 +30,17 @@ class HomePage{
                 conta.forEach( u => this.listaContas.push(u));
              })
         
-             
-            json.numeroConta = conta.split('-', 2)[0];
-            json.digito = conta.split('-', 2)[1];
-            
-           if(json != null)
-           this.listaContas.push({...json});
-            cy.writeFile('cypress/fixtures/contasCadastradas.json', JSON.stringify(this.listaContas));
+            if(conta != null)
+                json.numeroConta = conta.split('-', 2)[0];
+                json.digito = conta.split('-', 2)[1];
+                if(json != null)
+                    this.listaContas.push({...json});
+                    cy.writeFile('cypress/fixtures/contasCadastradas.json', JSON.stringify(this.listaContas));
            
         
     }
     clickBtnTransferencia(){
-        this.elements.btnTransferencia();
+        this.elements.btnTransferencia().click({force: true});
     }
 
  }
