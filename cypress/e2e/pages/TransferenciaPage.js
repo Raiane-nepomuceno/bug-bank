@@ -14,6 +14,13 @@ class TranferenciaPage{
         transferBtn: () =>  cy.contains('button', 'Transferir agora'),
 
     };
+    preencherDadosTransferencia(numConta, digito, valorTransf, descr){
+        this.elements.numberAccountlInput().type(numConta);
+        this.elements.digitAccountInput().type(digito);
+        this.elements.valueTransferInput().type(valorTransf);
+        this.elements.description().type(descr);
+        this.elements.transferBtn().click();
+    }
    transferenciaValida(){
     var json = {};
     json =  JSON.parse(this.resultJSONAccount()); // listagens do ultimo ultimos
@@ -22,19 +29,15 @@ class TranferenciaPage{
     //console.log(json) 
    }
    inputDataAccount(account){
-    const numeroConta = account.numeroConta;
-    const digito = account.digito;
+    var json = {};
 
-    const valueTranfer = faker.finance.amount;
-    const description = faker.finance.accountName;
+    json.numeroConta = account.split('-', 2)[0];
+    json.digito = account.split('-', 2)[1];
 
-    console.log(numeroConta);
-    console.log(digito);
-    //this.elements.numberAccountlInput().type(account.numeroConta,{force:true});
-    /*this.elements.digitAccountInput().type(account.digito, {force:true});
-    this.elements.valueTransferInput().type(valueTranfer, {force:true})
-    this.elements.description().type(description, {force:true});
-    this.elements.transferBtn().click({force:true});*/
+    //console.log("funcao inputDataAccpunt");
+    
+    this.elements.numberAccountlInput().type(json.numeroConta,{force:true});
+    this.elements.digitAccountInput().type(json.digito, {force:true});
    }
    resultJSONAccount(){
     let index = 0;

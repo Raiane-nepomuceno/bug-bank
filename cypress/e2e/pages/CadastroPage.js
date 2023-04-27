@@ -83,6 +83,30 @@ class CadastroPage{
         }
 
     }
+    registerUser(saldo,nome,email,senha){
+        this.elements.registerBtn().click({force: true});
+
+        this.elements.emailInput().eq(1).type(email, {force:true});
+        this.elements.nameInput().eq(0).type(nome, {force: true});
+        this.elements.passwordInput().eq(1).type(senha, {force: true,log:false});
+        this.elements.passwordInput().eq(2).type(senha, {force: true,log:false});
+
+        if(saldo == false){
+            this.registerUserValidNoBalance();
+            //this.saveUser(email, nome, senha, saldo);
+            //json.email = email;
+            //json.senha = senha;
+            //return JSON.stringify(json);
+        }
+        else{
+            this.registerUserValidWithBalance();
+            //this.saveUser(email, nome, senha, saldo);
+            /*json.email = email;
+            json.senha = senha;
+            return JSON.stringify(json);*/
+
+        }
+    }
     clearInputs(){
         this.elements.emailInput().eq(1).clear({force: true});
         this.elements.nameInput().eq(0).clear({force: true});

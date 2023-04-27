@@ -1,11 +1,19 @@
-Feature: Transferencia de saldo
+Feature: Transferência de saldo
 
-    Background:
-        Given que o usuário faça o cadastro
-        And o usuário será logado ao sistema
+Background:
+Given que o usuário está na tela de transferência
 
-    Scenario: Valor minímo, médio e máximo da transferência com saldo suficiente
-        And o usuário com saldo preencher os campos válidos <num_conta,digito,descr>
-        When o usuário informar o valor_transf <valor> 0,01; 100 mil reais; um milhão de reais
-        Then o usuário deverá conseguir transferir com sucesso
+Scenario: Informações bancárias
+When o usuário informar "<valorTransf>","<descr>"
+Then o usuário deverá ver a "<mensagem>"
+
+Examples:
+| valorTransf | descr            | mensagem                                          |
+| 0           | conta de energia | Valor da transferência não pode ser 0 ou negativo |
+| 1           | spotify          | Nao pode transferir pra mesmo conta               |
+| 0,01        | spotify          | Nao pode transferir pra mesmo conta               |
+| 10          | reserva          | Transferencia realizada com sucesso               |
+
+
+
 

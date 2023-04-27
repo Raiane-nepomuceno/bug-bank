@@ -2,10 +2,11 @@ import { Given, When, Then, And } from "@badeball/cypress-cucumber-preprocessor"
 import {loginPage} from "../pages/LoginPage"
 import {cadastroPage} from "../pages/CadastroPage"
 import { homePage } from "../pages/HomePage";
-import { transferenciaPage } from "../pages/TransferenciaPage";
+const { faker } = require('@faker-js/faker');
+import { extratoPage } from "../pages/ExtratoPage";
 var user,user2 = {};
 
-Given(/^que o usuário faça o cadastro$/, () => {
+/*Given(/^que o usuário faça o cadastro$/, () => {
     cadastroPage.enterURL();
 	user = JSON.parse(cadastroPage.registerUser(true));
 
@@ -35,13 +36,53 @@ Then(/^o usuário com saldo preencher os campos válidos <num_conta,digito,descr
 	homePage.clickBtnTransferencia();
 	transferenciaPage.transferenciaValida();  
 });
+*/
 
-When(/^o usuário informar o valor_transf <0,01; 100 mil reais; um milhão de reais$/, () => {
-	return true;
+Given("que o usuário está na tela de transferência", () => {
+  cy.visit("https://bugbank.netlify.app/transfer");
+  cadastroPage.registerUser(true,"teste","teste@gmail.com",123);
+  loginPage.loginUsuarioValido("teste@gmail.com",123);
+});
+When("o usuário informar {string},{string}",(valorTransf, descr) => {
+	switch (valorTransf) {
+		case '0':
+			homePage.clickBtnTransferencia();
+			cy.get('input[type=accountNumber]').type(faker.random.numeric(3));
+			cy.get('input[type=digit]').type(faker.random.numeric(1));
+			break;
+
+		case '0,01':
+			homePage.getAccountNumber();
+			break;
+       case '1':
+			homePage.getAccountNumber();
+			break;
+	   //case '10':
+	//break;
+	
+	}
+	cy.wait(500);
+    cy.get('input[type=transferValue]').type(valorTransf);
+    cy.get('input[type=description]').type(descr);
+    cy.contains('button', 'Transferir agora').click();
 });
 
-Then(/^o usuário deverá conseguir transferir com sucesso$/, () => {
-	return true;
+Then("o usuário deverá ver a {string}", (mensagem) => {
+	cy.wait(1000);
+	cy.get('#modalText').should("have.text", mensagem);
 });
+ 
+Then(
+  "o saldo da conta de origem deve ser atualizado para {string}",
+  (saldo) => {
+    cy.get("#balance_display").should("have.text", saldo);
+  }
+);
 
+Then(
+  "o saldo da conta de destino deve ser atualizado para {string}",
+  (saldo) => {
+    cy.get("#destination_balance_display").should("have.text", saldo);
+  }
+);
 

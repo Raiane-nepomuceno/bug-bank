@@ -1,26 +1,30 @@
+import { transferenciaPage } from "../pages/TransferenciaPage";
+import {extratoPage} from "../pages/ExtratoPage";
+
 class HomePage{
     constructor(){
-        this.listaContas = []
+        this.listaContas = [];
     }
     elements = {
         btnLogout:() => cy.get('.home__ContainerLink-sc-1auj767-2'),
         btnTransferencia:() => cy.get('#btn-TRANSFERÊNCIA'), 
+        btnExtrato:() => cy.get('#btn-EXTRATO'),
+
     };
 
      logoutUser(){
         this.elements.btnLogout().click({force: true});
        }
       
-     getAccountNumber() {
+    getAccountNumber() {
         cy.wait(1000);
         cy.get("#textAccountNumber > span")
-              .invoke("text")
-                 .then((text) => {
-                    cy.log("Text",text).then(() =>{
-                        this.saveAccountNumber(text)
-                    })
-        })
-    }
+          .invoke("text")
+          .then((text) => {
+            cy.log("Text", text);
+            this.inputDataAccount(text);
+          });
+      }
     saveAccountNumber(conta){
         
         var json = {};
@@ -39,8 +43,17 @@ class HomePage{
            
         
     }
+    clickBtnExtrato(){
+        this.elements.btnExtrato().click({force:true});
+        extratoPage.getBalanceAvailabe();
+
+    }
     clickBtnTransferencia(){
         this.elements.btnTransferencia().click({force: true});
+    }
+    inputDataAccount(textoCaptado){
+        this.clickBtnTransferencia();
+        transferenciaPage.inputDataAccount(textoCaptado);
     }
 
  }
