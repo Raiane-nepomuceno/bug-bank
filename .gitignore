@@ -3,8 +3,9 @@ node_modules
 *.rar
 reports/html/*
 reports/json/*
-reports/screenshots/*
-cypress/downloads/*
+cypress/report
+cypress/screenshots
+cypress/downloads
 cypress/videos
 .vscode
 =======
