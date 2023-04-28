@@ -47,28 +47,46 @@ Given("que o usuário está na tela de transferência", () => {
 });
 When("o usuário informar {string},{string}",(valorTransf, descr) => {
 	switch (valorTransf) {
+
 		case '0':
 			cy.log("Validação de usuário inválido e valor inválido igual a 0");
 			homePage.clickBtnTransferencia();
 			cy.get('input[type=accountNumber]').type(faker.random.numeric(3));
 			cy.get('input[type=digit]').type(faker.random.numeric(1));
 			break;
+
 		case '-1':
 				cy.log("Validação de usuário e valor inválido igual a -1");
 				homePage.clickBtnTransferencia();
 				cy.get('input[type=accountNumber]').type(faker.random.numeric(3));
 				cy.get('input[type=digit]').type(faker.random.numeric(1));
 				break;
-	
-		/*case '0,01':
+
+		case '11':
+				cy.log("Validação de usuário inválido e valor válido");
+				homePage.clickBtnTransferencia();
+				cy.get('input[type=accountNumber]').type(faker.random.numeric(3));
+				cy.get('input[type=digit]').type(faker.random.numeric(1));
+				break;
+
+	    case '1.000,01':
+				cy.log("Validação de usuário inválido e valor válido");
+				homePage.clickBtnTransferencia();
+				cy.get('input[type=accountNumber]').type(" ");
+				cy.get('input[type=digit]').type(" ");
+				break;
+
+		case '0.01':
 		    cy.log("Validação de envio para o próprio usuário (o mesmo titular da conta)");
 			cy.log("Validação de usuário inválido");
 			homePage.getAccountNumber();
-			break;*/
+			break;
+
        case '1':
 		    cy.log("Validação de envio para o próprio usuário (o mesmo titular da conta)");
 			homePage.getAccountNumber();
 			break;
+
 	   case '10':
 		    cy.log("Validação de envio para outro usuário diferente do titular da conta");
 			cy.log("Acessando a conta do primeiro usuário");
@@ -91,8 +109,30 @@ When("o usuário informar {string},{string}",(valorTransf, descr) => {
 			  cy.get('input[type=accountNumber]').type(dadosBancarios.numConta);
 			  cy.get('input[type=digit]').type(dadosBancarios.digito);
 			});
-			break;
-	
+			break;	
+		case '1.05':
+			cy.log("Validação de envio para outro usuário diferente do titular da conta");
+			cy.log("Acessando a conta do primeiro usuário");
+		    homePage.getAccount();
+			loginPage.logout();
+
+			cy.log("Registrando o segundo usuário");
+			cadastroPage.registerUser(true,"teste","teste2@gmail.com",123);
+			loginPage.loginUsuarioValido("teste2@gmail.com",123);
+
+			cy.log("Acessando o extrato antes da transferência");
+			extratoPage.getBalanceAvailable();
+		
+			homePage.clickBtnTransferencia();
+
+			cy.log("Inserindo os dados bancários do primeiro usuario");
+			var dadosBancarios = {};
+			transferenciaPage.tranferOtherUser().then((jsonString) => {
+			  dadosBancarios = JSON.parse(jsonString);	
+			  cy.get('input[type=accountNumber]').type(dadosBancarios.numConta);
+			  cy.get('input[type=digit]').type(dadosBancarios.digito);
+			});
+			break;	 	
 	}
 	cy.wait(500);
     cy.get('input[type=transferValue]').type(valorTransf);
@@ -106,20 +146,11 @@ Then("o usuário deverá ver a {string}", (mensagem) => {
 	cy.get('#modalText').should("have.text", mensagem);
 	switch (mensagem) {
 		case 'Transferencia realizada com sucesso':
-			extratoPage.updateSaldoAtual();
+			extratoPage.compararSaldoAtualInicialValorEnviado();
 			loginPage.logout();
 			loginPage.loginUsuarioValido("teste@gmail.com",123);
+			extratoPage.compararSaldoAtualInicialValorRecebido();
 			break;
 	};
 });
  
-Then("o saldo da conta de origem deve ser atualizado",() => {
-   // cy.get("#balance_display").should("have.text", );
-  }
-);
-
-Then("o saldo da conta de destino deve ser atualizado",() => {
-    //cy.get("#destination_balance_display").should("have.text", saldo);
-  }
-);
-

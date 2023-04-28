@@ -11,9 +11,10 @@ Examples:
 | valorTransf | descr            | mensagem                                          |
 | 0           | conta de energia | Valor da transferência não pode ser 0 ou negativo |
 | -1          | conta de água    | Valor da transferência não pode ser 0 ou negativo |
-| 1           | spotify          | Nao pode transferir pra mesmo conta               |
+| 11          | netflix          | Conta inválida ou inexistente                     |
+| 1.000,01    | iptu             | Conta inválida ou inexistente                     |
+| 0.01        | spotify          | Nao pode transferir pra mesmo conta               |
 | 10          | reserva          | Transferencia realizada com sucesso               |
-
 
 
 

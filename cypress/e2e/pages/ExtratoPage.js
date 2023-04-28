@@ -15,7 +15,7 @@ class ExtratoPage{
         cy.get('#textBalance > span')
           .invoke("text")
           .then((text) => {
-            cy.log("Saldo Inicial", text);
+            cy.log("Saldo Inicial", text.slice(2));
             this.setSaldoInicial(text.slice(2));
           });
       }
@@ -24,12 +24,23 @@ class ExtratoPage{
       cy.get('#textBalanceAvailable')
         .invoke("text")
         .then((text) => {
-            cy.log("Saldo Atual", text);
+            cy.log("Saldo Atual", text.slice(2));
             this.setSaldoAtual(text.slice(2));
         })
 
       }
-      updateSaldoAtual(){
+      compararSaldoAtualInicialValorRecebido(){
+        this.clickBtnExtrato();
+        
+        this.getBalanceAvailableCurrent();
+        this.obtainedCalculation().then((saldo) => {
+          console.log("saldo:"+saldo);
+          expect(saldo).to.equal(1010);
+        });
+
+
+      }
+      compararSaldoAtualInicialValorEnviado(){
         this.clickBtnBack();
         this.clickBtnExtrato();
         
@@ -37,6 +48,10 @@ class ExtratoPage{
         this.verification();
 
       }
+      stringToFloat(str) {
+        return parseFloat(str.replace(/\./g, '').replace(',', '.'));
+      }
+      
       verification() {
         this.obtainedCalculation().then((saldo) => {
           expect(saldo).to.equal(990);
@@ -46,11 +61,15 @@ class ExtratoPage{
       obtainedCalculation() {
         //saldo obtido
         return cy.wait(1000).then(() => {
-          //console.log("saldo atual:" + this.getSaldoAtual());
-          const saldoStr = this.getSaldoAtual().replace(',', '.'); // substitui ',' por '.'
-          return parseFloat(saldoStr);
+          const saldoStr = this.getSaldoAtual().replace(/\s/g, '');
+          console.log("saldo atual:", saldoStr);
+                
+          const saldoFloat = this.stringToFloat(saldoStr);
+          console.log("saldo atual convertido:", saldoFloat);
+          return saldoFloat;
         });
       }
+                  
     setSaldoInicial(saldo){
       this.saldoInicial = saldo;
     } 
