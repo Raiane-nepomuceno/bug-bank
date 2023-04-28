@@ -25,6 +25,27 @@ class HomePage{
             this.inputDataAccount(text);
           });
       }
+    getAccount() {
+        cy.wait(1000);
+        cy.get("#textAccountNumber > span")
+            .invoke("text")
+            .then((text) => {
+            cy.log("Text", text);
+            this.saveLastAccountNumber(text);
+        //return text;
+        });
+}
+saveLastAccountNumber(conta){
+    var json = {};
+
+    if(conta != null)
+        json.numeroConta = conta.split('-', 2)[0];
+        json.digito = conta.split('-', 2)[1];
+        if(json != null)
+            this.listaContas.push({...json});
+            cy.writeFile('cypress/fixtures/ultimaContaAcessada.json', JSON.stringify(this.listaContas));
+}
+
     saveAccountNumber(conta){
         
         var json = {};
@@ -40,12 +61,10 @@ class HomePage{
                 if(json != null)
                     this.listaContas.push({...json});
                     cy.writeFile('cypress/fixtures/contasCadastradas.json', JSON.stringify(this.listaContas));
-           
-        
     }
     clickBtnExtrato(){
         this.elements.btnExtrato().click({force:true});
-        extratoPage.getBalanceAvailabe();
+        extratoPage.getBalanceAvailable();
 
     }
     clickBtnTransferencia(){

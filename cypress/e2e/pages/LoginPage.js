@@ -28,7 +28,9 @@ class LoginPage{
  validaLoginSucesso(){
    this.elements.logoutBtn().should('contain','Sair');
  }
-
+logout(){
+  this.elements.logoutBtn().click({force: true});
+}
  validaLoginInvalido(){
    this.elements.emailInput.type('teste@gmail.com',{force: true});
    this.elements.passwordInput.type({force: true},123);

@@ -12,7 +12,7 @@ class TranferenciaPage{
         valueTransferInput:() => cy.get("input[type=transferValue]"),
         description:() => cy.get("input[type=description]"),
         transferBtn: () =>  cy.contains('button', 'Transferir agora'),
-
+        closeBtnModal:() => cy.get('#btnCloseModal'),
     };
     preencherDadosTransferencia(numConta, digito, valorTransf, descr){
         this.elements.numberAccountlInput().type(numConta);
@@ -48,11 +48,22 @@ class TranferenciaPage{
 
             index = account.length;     
             json.numeroConta = account[index - 1].numeroConta;
-            json.digito =  account[index - 1].digito;  
+            json.digito = account[index - 1].digito;  
         })
-        //console.log(array)
         return JSON.stringify(json);
      
    }
- }
+    tranferOtherUser() {
+        var json = {};
+        return cy.fixture('ultimaContaAcessada').then((account) => {
+          json.numConta = account[0].numeroConta;
+          json.digito = account[0].digito;
+          return JSON.stringify(json);
+        });
+      }
+
+    closeModalTransfer(){
+        this.elements.closeBtnModal().click();
+    }
+       }
  export const transferenciaPage = new TranferenciaPage();

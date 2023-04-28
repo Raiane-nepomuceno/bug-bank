@@ -93,17 +93,10 @@ class CadastroPage{
 
         if(saldo == false){
             this.registerUserValidNoBalance();
-            //this.saveUser(email, nome, senha, saldo);
-            //json.email = email;
-            //json.senha = senha;
-            //return JSON.stringify(json);
         }
         else{
             this.registerUserValidWithBalance();
-            //this.saveUser(email, nome, senha, saldo);
-            /*json.email = email;
-            json.senha = senha;
-            return JSON.stringify(json);*/
+      
 
         }
     }
