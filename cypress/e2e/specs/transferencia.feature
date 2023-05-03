@@ -3,7 +3,7 @@ Feature: Transferência de saldo
 Background:
 Given que o usuário está na tela de transferência
 
-Scenario: Informações bancárias
+Scenario: Transferência bancária
 When o usuário informar "<valorTransf>","<descr>"
 Then o usuário deverá ver a "<mensagem>"
 
