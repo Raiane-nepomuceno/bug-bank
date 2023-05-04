@@ -1,6 +1,6 @@
 import { transferenciaPage } from "../pages/TransferenciaPage";
 import {extratoPage} from "../pages/ExtratoPage";
-
+import 'cypress-wait-until';
 class HomePage{
     constructor(){
         this.listaContas = [];
@@ -11,29 +11,29 @@ class HomePage{
         btnExtrato:() => cy.get('#btn-EXTRATO'),
 
     };
-
+     acessPageTransfer(){
+        cy.visit("https://bugbank.netlify.app/transfer");
+     }
      logoutUser(){
         this.elements.btnLogout().click({force: true});
-       }
-      
+       }   
     getAccountNumber() {
-        cy.wait(1000);
-        cy.get("#textAccountNumber > span")
-          .invoke("text")
-          .then((text) => {
-            cy.log("Text", text);
-            this.inputDataAccount(text);
-          });
-      }
-    getAccount() {
-        cy.wait(1000);
-        cy.get("#textAccountNumber > span")
+      cy.waitUntil(() =>cy.get('#textAccountNumber > span').should('be.visible'))
             .invoke("text")
             .then((text) => {
-            cy.log("Text", text);
-            this.saveLastAccountNumber(text);
+                cy.log("Text", text);
+                this.inputDataAccount(text);
+          });
+    }
+    getAccount() {
+      cy.waitUntil(() =>cy.get('#textAccountNumber > span').should('be.visible'))
+                .invoke("text")
+                .then((text) => {
+                cy.log("Text", text);
+                this.saveLastAccountNumber(text);
         //return text;
         });
+
 }
 saveLastAccountNumber(conta){
     var json = {};

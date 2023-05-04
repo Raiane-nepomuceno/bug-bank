@@ -11,7 +11,7 @@ class CadastroPage{
         registerBtn: () => cy.get('.otUnI'),
         loginBtn: () =>  cy.contains('button', 'Registrar'),
         submitBtn: () => cy.get('button[type="submit"]'),
-        modalSucessRegister: () =>  cy.get('#modalText'),
+        modalSucessRegister: () => cy.get('#modalText'),
         modalBtnCloseModal: () => cy.get('#btnCloseModal'),
         toggleAddBalance: () => cy.get('#toggleAddBalance'),
 

@@ -1,4 +1,6 @@
-import { transferenciaPage } from "../pages/TransferenciaPage";
+import { homePage } from "./HomePage";
+import { transferenciaPage } from "./TransferenciaPage";
+import 'cypress-wait-until';
 
 class ExtratoPage{
 
@@ -11,25 +13,26 @@ class ExtratoPage{
         textBalanceAvailable:() => cy.get('#textBalanceAvailable'),
     }
     getBalanceAvailable() {
-        cy.wait(1000);
-        cy.get('#textBalance > span')
-          .invoke("text")
+      cy.waitUntil(() =>cy.get('#textAccountNumber > span').should('be.visible'))
+         .invoke("text")
+            .then((text) => {
+              cy.log("Saldo Inicial", text.slice(2));
+              this.setSaldoInicial(text.slice(2));
+            });
+          }
+          
+      getBalanceAvailableCurrent() {
+        
+        cy.waitUntil(() =>cy.get('.bank-statement__ContainerTransaction-sc-7n8vh8-12 > :nth-child(1)').should('be.visible'))
+          .get('#textBalanceAvailable')
+          .should('be.visible')
+          .invoke('text')
           .then((text) => {
-            cy.log("Saldo Inicial", text.slice(2));
-            this.setSaldoInicial(text.slice(2));
+            cy.log('Saldo Atual', text.slice(2));
+            this.setSaldoAtual(text.slice(2));
           });
       }
-    getBalanceAvailableCurrent(){
-      cy.wait(1000);
-      cy.get('#textBalanceAvailable')
-        .invoke("text")
-        .then((text) => {
-            cy.log("Saldo Atual", text.slice(2));
-            this.setSaldoAtual(text.slice(2));
-        })
-
-      }
-      compararSaldoAtualInicialValorRecebido(){
+           compararSaldoAtualInicialValorRecebido(){
         this.clickBtnExtrato();
         
         this.getBalanceAvailableCurrent();
@@ -60,7 +63,9 @@ class ExtratoPage{
             
       obtainedCalculation() {
         //saldo obtido
-        return cy.wait(1000).then(() => {
+        return cy.waitUntil(() => cy.get('#textBalanceAvailable').should('be.visible'))
+        .then(() => {
+    
           const saldoStr = this.getSaldoAtual().replace(/\s/g, '');
           console.log("saldo atual:", saldoStr);
                 

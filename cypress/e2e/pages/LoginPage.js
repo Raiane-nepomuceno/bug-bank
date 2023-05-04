@@ -20,23 +20,33 @@ class LoginPage{
  }
  loginUsuarioValido(email, senha){
     this.elements.emailInput().eq(0).type(email,{force: true});
-    this.elements.passwordInput().eq(0).type(senha,{force: true});
+    this.elements.passwordInput().eq(0).type(senha,{force: true,log:false});
     this.elements.loginBtn().click({force: true});
     this.validaLoginSucesso();
  }
- 
+ loginUsuarioValidoUser1(){
+  var json = {};
+  cy
+.fixture('usuariosCadastrados')
+.then( usuario => {
+  json.email = usuario[0].email;
+  json.senha = usuario[0].senha;
+        
+
+  this.elements.emailInput().eq(0).type(json.email,{force: true});
+  this.elements.passwordInput().eq(0).type(json.senha,{force: true,log:false});
+  this.elements.loginBtn().click({force: true});
+  this.validaLoginSucesso();
+
+})
+}
+
  validaLoginSucesso(){
    this.elements.logoutBtn().should('contain','Sair');
  }
 logout(){
   this.elements.logoutBtn().click({force: true});
 }
- validaLoginInvalido(){
-   this.elements.emailInput.type('teste@gmail.com',{force: true});
-   this.elements.passwordInput.type({force: true},123);
-   this.elements.loginBtn().click({force: true});
-
- }
  validaLoginValido(){
    this.elements.errorMessage.should('contain','Usuário ou senha inválido. Tente novamente ou verifique suas informações!');
  }
