@@ -1,4 +1,7 @@
-- Ao clonar o projeto para instalar todas as dependências execute o comando: **npm i**;
+- Ao clonar o projeto para instalar todas as dependências execute o comando: 
+```
+npm i;
+```
 - Para rodar o projeto execute:
 ```
  npm cypress open
