@@ -1,6 +1,6 @@
 - Ao clonar o projeto para instalar todas as dependências execute o comando: 
 ```
-npm i;
+npm i
 ```
 - Para rodar o projeto execute:
 ```
