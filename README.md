@@ -7,9 +7,9 @@ npm i
 ```
 - Para rodar o projeto execute:
 ```
- npm cypress open
+ npx cypress open
  ```
 - Para rodar o projeto em backend rode o comando:
 ```
- npm cypress run
+ npx cypress run
  ```
