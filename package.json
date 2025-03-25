@@ -26,7 +26,7 @@
     "@faker-js/faker": "^7.6.0",
     "@types/cypress-cucumber-preprocessor": "^4.0.1",
     "@types/lodash-es": "^4.17.7",
-    "cypress": "^12.10.0",
+    "cypress": "^12.17.4",
     "cypress-cucumber-attach-screenshots-to-failed-steps": "^1.0.0",
     "cypress-cucumber-preprocessor": "^4.3.1",
     "cypress-mochawesome-reporter": "^3.3.0",
@@ -43,7 +43,10 @@
     "util": "^0.12.5"
   },
   "compilerOptions": {
-    "types" : [ "cypress" ,  "cypress-wait-until" ],
+    "types": [
+      "cypress",
+      "cypress-wait-until"
+    ],
     "baseUrl": ".",
     "paths": {
       "@pages/*": [

@@ -13,7 +13,7 @@ class ExtratoPage{
         textBalanceAvailable:() => cy.get('#textBalanceAvailable'),
     }
     getBalanceAvailable() {
-      cy.waitUntil(() =>cy.get('#textAccountNumber > span').should('be.visible'))
+      cy.waitUntil(() =>cy.get('#textBalance > span').should('be.visible'))
          .invoke("text")
             .then((text) => {
               cy.log("Saldo Inicial", text.slice(2));

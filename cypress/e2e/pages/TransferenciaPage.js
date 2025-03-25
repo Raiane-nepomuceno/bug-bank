@@ -177,16 +177,24 @@ class TranferenciaPage{
     this.elements.numberAccountlInput().type(json.numeroConta,{force:true});
     this.elements.digitAccountInput().type(json.digito, {force:true});
    }
-   inputDataAccountSecondAccount(){
-    var dadosBancarios = {};
-    transferenciaPage.tranferOtherUser().then((jsonString) => {
-      dadosBancarios = JSON.parse(jsonString);	
-      cy.get('input[type=accountNumber]').type(dadosBancarios.numConta);
-      cy.get('input[type=digit]').type(dadosBancarios.digito);
+   inputDataAccountSecondAccount() {
+    transferenciaPage.tranferOtherUser().then((dadosBancarios) => {
+      // Dados bancários já estão no formato correto (json com numConta e digito)
+  
+      cy.get('input[type=accountNumber]')
+        .type(dadosBancarios.numConta)  // Digita o número da conta
+        .should('have.value', dadosBancarios.numConta); // Verifica se o valor foi inserido
+  
+      cy.get('input[type=digit]')
+        .type(dadosBancarios.digito)  // Digita o dígito
+        .should('have.value', dadosBancarios.digito); // Verifica se o valor foi inserido
+  
+      cy.log('type=accountNumber', dadosBancarios.numConta);
+      cy.log('type=digit', dadosBancarios.digito);
     });
-
-   }
-   inputDataAccountNull(){
+  }
+      
+        inputDataAccountNull(){
     this.elements.numberAccountlInput().type(" ");
     this.elements.digitAccountInput().type(" ");
 
@@ -209,15 +217,19 @@ class TranferenciaPage{
         return JSON.stringify(json);
      
    }
-    tranferOtherUser() {
-        var json = {};
-        return cy.fixture('ultimaContaAcessada').then((account) => {
-          json.numConta = account[0].numeroConta;
-          json.digito = account[0].digito;
-          return JSON.stringify(json);
-        });
-      }
-
+   tranferOtherUser() {
+    return cy.fixture('ultimaContaAcessada').then((account) => {
+      // Extraindo os dados da fixture
+      const json = {
+        numConta: account[0].numeroConta,
+        digito: account[0].digito
+      };
+  
+      // Retorna o objeto com os dados
+      return json;
+    });
+  }
+    
     closeModalTransfer(){
         this.elements.closeBtnModal().click();
     }
